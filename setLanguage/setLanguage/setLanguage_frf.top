@@ -1,0 +1,6 @@
+topic: ~setLanguage()
+language: frf
+
+concept:(enu) ["parle anglais" anglais "parle en anglais"]
+
+u:(~enu) ok, i speak english now ! $setEnglish=1

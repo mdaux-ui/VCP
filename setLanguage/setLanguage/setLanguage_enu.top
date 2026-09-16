@@ -1,0 +1,6 @@
+topic: ~setLanguage()
+language: enu
+
+concept:(frf) ["switch to french" french "speak in french"]
+
+u:(~frf) ok, je parle français maintenant ! $setFrench=1
