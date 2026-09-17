@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?><ChoregrapheProject xmlns="http://www.aldebaran-robotics.com/schema/choregraphe/project.xsd" xar_version="3"><Box name="root" id="-1" localization="8" tooltip="Root box of Choregraphe&apos;s behavior. Highest level possible." x="0" y="0"><bitmap>media/images/box/root.png</bitmap><script language="4"><content><![CDATA[]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /><Timeline enable="0"><BehaviorLayer name="behavior_layer1"><BehaviorKeyframe name="keyframe1" index="1"><Diagram><Box name="DialogLang" id="4" localization="8" tooltip="Enter description here" x="475" y="246"><bitmap>media/images/box/box-diagram.png</bitmap><script language="4"><content><![CDATA[]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="input" type="1" type_size="1" nature="2" inner="0" tooltip="" id="2" /><Output name="output" type="1" type_size="1" nature="1" inner="0" tooltip="" id="3" /><Timeline enable="0"><BehaviorLayer name="behavior_layer1"><BehaviorKeyframe name="keyframe1" index="1"><Diagram scale="84.0896"><Box name="Dialog" id="3" localization="8" tooltip="An example of multilanguage dialog implementation" x="475" y="246"><dialogFile>ExampleDialog/ExampleDialog.dlg</dialogFile><bitmap>media/images/box/box-dialog.png</bitmap><script language="4"><content><![CDATA[]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /><Output name="toEnglish" type="0" type_size="1" nature="1" inner="0" tooltip="" id="5" /><Output name="toFrench" type="0" type_size="1" nature="1" inner="0" tooltip="" id="6" /><Output name="showPhoto" type="0" type_size="1" nature="2" inner="0" tooltip="" id="7" /><Output name="hidePhoto" type="0" type_size="1" nature="2" inner="0" tooltip="" id="8" /><Resource name="Speech" type="Lock" timeout="0" /><Resource name="Speech recognition" type="Lock" timeout="0" /></Box><Box name="Set Language" id="2" localization="8" tooltip="Set the language of your robot for the current application. Your robot will speak and understand the selected language as long as your application has focus. Any following call to ALSpeechRecognition (Speech Reco. box for instance), ALTextToSpeech (Say box for instance) or ALDialog will use this language.&#x0A;" x="302" y="383"><bitmap>media/images/box/interaction/say.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        try:
+            self.tts = ALProxy("ALTextToSpeech")
+        except:
+            self.logger.warn("ALTextToSpeech is not available, language setting cannot be applied to speech")
+            self.tts = None
+
+        try:
+            self.asr = ALProxy("ALSpeechRecognition")
+        except:
+            self.logger.warn("ALSpeechRecognition is not available, language setting cannot be applied to recognition")
+            self.asr = None
+
+        try:
+            self.dialog = ALProxy("ALDialog")
+        except:
+            self.logger.warn("ALDialog is not available, language setting cannot be applied to dialog")
+            self.dialog = None
+
+    def onInput_onSet(self):
+        lang = self.getParameter("Language")
+        try:
+            if self.asr:
+                self.asr.setLanguage( self.getParameter("Language") )
+            if self.tts:
+                self.tts.setLanguage( self.getParameter("Language") )
+            if self.dialog:
+                self.dialog.setLanguage( self.getParameter("Language") )
+            if self.tts is None and self.asr is None and self.dialog is None:
+                raise RuntimeError("Cannot set language: neither ALTextToSpeech nor ALSpeechRecognition nor ALDialog is available.")
+            self.onReady()
+        except:
+            error = "Language " + lang + " cannot be set."
+            self.logger.warn(error)
+            self.onError(error)]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onSet" type="1" type_size="1" nature="1" inner="0" tooltip="The data is set when a signal is received on this input." id="2" /><Output name="onReady" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when the data has been set." id="3" /><Output name="onError" type="3" type_size="1" nature="2" inner="0" tooltip="Error output:&#x0A;- triggered if the language asked cannot be set" id="4" /><Parameter name="Language" inherits_from_parent="0" content_type="3" value="French" default_value="French" custom_choice="1" tooltip="Set the language the robot speaks and understands." id="5"><Choice value="Arabic" /><Choice value="Brazilian" /><Choice value="Chinese" /><Choice value="Czech" /><Choice value="Danish" /><Choice value="Dutch" /><Choice value="English" /><Choice value="Finnish" /><Choice value="French" /><Choice value="German" /><Choice value="Greek" /><Choice value="Italian" /><Choice value="Japanese" /><Choice value="Korean" /><Choice value="MandarinTaiwan" /><Choice value="Norwegian" /><Choice value="Polish" /><Choice value="Portuguese" /><Choice value="Russian" /><Choice value="Spanish" /><Choice value="Swedish" /><Choice value="Turkish" /></Parameter><Resource name="Speech" type="Lock" timeout="0" /></Box><Box name="Set Language (1)" id="1" localization="8" tooltip="Set the language of your robot for the current application. Your robot will speak and understand the selected language as long as your application has focus. Any following call to ALSpeechRecognition (Speech Reco. box for instance), ALTextToSpeech (Say box for instance) or ALDialog will use this language.&#x0A;" x="290" y="502"><bitmap>media/images/box/interaction/say.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        try:
+            self.tts = ALProxy("ALTextToSpeech")
+        except:
+            self.logger.warn("ALTextToSpeech is not available, language setting cannot be applied to speech")
+            self.tts = None
+
+        try:
+            self.asr = ALProxy("ALSpeechRecognition")
+        except:
+            self.logger.warn("ALSpeechRecognition is not available, language setting cannot be applied to recognition")
+            self.asr = None
+
+        try:
+            self.dialog = ALProxy("ALDialog")
+        except:
+            self.logger.warn("ALDialog is not available, language setting cannot be applied to dialog")
+            self.dialog = None
+
+    def onInput_onSet(self):
+        lang = self.getParameter("Language")
+        try:
+            if self.asr:
+                self.asr.setLanguage( self.getParameter("Language") )
+            if self.tts:
+                self.tts.setLanguage( self.getParameter("Language") )
+            if self.dialog:
+                self.dialog.setLanguage( self.getParameter("Language") )
+            if self.tts is None and self.asr is None and self.dialog is None:
+                raise RuntimeError("Cannot set language: neither ALTextToSpeech nor ALSpeechRecognition nor ALDialog is available.")
+            self.onReady()
+        except:
+            error = "Language " + lang + " cannot be set."
+            self.logger.warn(error)
+            self.onError(error)]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onSet" type="1" type_size="1" nature="1" inner="0" tooltip="The data is set when a signal is received on this input." id="2" /><Output name="onReady" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when the data has been set." id="3" /><Output name="onError" type="3" type_size="1" nature="2" inner="0" tooltip="Error output:&#x0A;- triggered if the language asked cannot be set" id="4" /><Parameter name="Language" inherits_from_parent="0" content_type="3" value="English" default_value="English" custom_choice="1" tooltip="Set the language the robot speaks and understands." id="5"><Choice value="Arabic" /><Choice value="Brazilian" /><Choice value="Chinese" /><Choice value="Czech" /><Choice value="Danish" /><Choice value="Dutch" /><Choice value="English" /><Choice value="Finnish" /><Choice value="French" /><Choice value="German" /><Choice value="Greek" /><Choice value="Italian" /><Choice value="Japanese" /><Choice value="Korean" /><Choice value="MandarinTaiwan" /><Choice value="Norwegian" /><Choice value="Polish" /><Choice value="Portuguese" /><Choice value="Russian" /><Choice value="Spanish" /><Choice value="Swedish" /><Choice value="Turkish" /></Parameter><Resource name="Speech" type="Lock" timeout="0" /></Box><Box name="Show Image" id="13" localization="8" tooltip="display an image on the screen&#x0A;&#x0A;V1.0.0&#x0A;" x="752" y="274"><bitmap>media/images/box/interaction/rec_movie.png</bitmap><script language="4"><content><![CDATA[
+
+class MyClass(GeneratedClass):
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def _getTabletService(self):
+        tabletService = None
+        try:
+            tabletService = self.session().service("ALTabletService")
+        except Exception as e:
+            self.logger.error(e)
+        return tabletService
+
+    def _getAbsoluteUrl(self, partial_url):
+        import os
+        subPath = os.path.join(self.packageUid(), os.path.normpath(partial_url).lstrip("\\/"))
+        # We create TabletService here in order to avoid
+        # problems with connections and disconnections of the tablet during the life of the application
+        return "http://%s/apps/%s" %(self._getTabletService().robotIp(), subPath.replace(os.path.sep, "/"))
+
+    def onInput_onStart(self):
+        # We create TabletService here in order to avoid
+        # problems with connections and disconnections of the tablet during the life of the application
+        tabletService = self._getTabletService()
+        if tabletService:
+            try:
+                url = self.getParameter("ImageUrl")
+                if url == '':
+                    self.logger.error("URL of the image is empty")
+                if not url.startswith('http'):
+                    url = self._getAbsoluteUrl(url)
+                tabletService.showImage(url)
+            except Exception as err:
+                self.logger.error("Error during ShowImage : %s " % err)
+                self.onStopped()
+        else:
+            self.logger.warning("No ALTabletService, can't display the image.")
+            self.onStopped()
+
+    def onInput_onHideImage(self):
+        # We create TabletService here in order to avoid
+        # problems with connections and disconnections of the tablet during the life of the application
+        tabletService = self._getTabletService()
+        if tabletService:
+            try:
+                tabletService.hideImage()
+            except Exception as err:
+                self.logger.error("Error during HideImage : %s " % err)
+                self.onStopped()
+        else:
+            self.logger.warning("No ALTabletService, can't hide the image.")
+            self.onStopped()
+
+    def onInput_onPreLoadImage(self):
+        # We create TabletService here in order to avoid
+        # problems with connections and disconnections of the tablet during the life of the application
+        tabletService = self._getTabletService()
+        if tabletService:
+            try:
+                partialUrl = self.getParameter("ImageUrl")
+                fullUrl = self._getAbsoluteUrl(partialUrl)
+                tabletService.preLoadImage(fullUrl)
+            except Exception as err:
+                self.logger.warning("Error during preLoadImage : %s " % err)
+                self.onStopped()
+        else:
+            self.logger.warning("No ALTabletService, can't preload the image.")
+            self.onStopped()
+
+    def onInput_onStop(self):
+        self.onUnload()
+        self.onStopped()]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Input name="onHideImage" type="1" type_size="1" nature="1" inner="0" tooltip="Hide the image when a signal is received on this input." id="4" /><Input name="onPreLoadImage" type="1" type_size="1" nature="1" inner="0" tooltip="Preload the image when a signal is received on this input." id="5" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="6" /><Parameter name="ImageUrl" inherits_from_parent="0" content_type="3" value="https://www.youtube.com/" default_value="" custom_choice="0" tooltip='path of the image inside the &quot;html&quot; folder (e.g. &quot;/images/myimage.png&quot;' id="7" /></Box><Box name="Show Web View" id="8" localization="8" tooltip="Shows the webview (html content) on the tablet.&#x0A;&#x0A;V1.0.0&#x0A;" x="976" y="500"><bitmap>media/images/box/internet/internet.png</bitmap><script language="4"><content><![CDATA[
+
+class MyClass(GeneratedClass):
+
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def _getTabletService(self):
+        tabletService = None
+        try:
+            tabletService = self.session().service("ALTabletService")
+        except Exception as e:
+            self.logger.error(e)
+        return tabletService
+
+    def onInput_onStart(self):
+        # We create TabletService here in order to avoid
+        # problems with connections and disconnections of the tablet during the life of the application
+        tabletService = self._getTabletService()
+        if tabletService:
+            tabletService.showWebview()
+        else:
+            self.logger.warning("ALTabletService not found.")
+        self.onStopped()]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="3" /></Box><Box name="Hide Web View" id="4" localization="8" tooltip="Hides the webview (html content) on the tablet, behind a generic cover&#x0A;&#x0A;V1.0.0&#x0A;" x="950" y="320"><bitmap>media/images/box/internet/internet.png</bitmap><script language="4"><content><![CDATA[
+
+class MyClass(GeneratedClass):
+
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        pass
+
+    def onUnload(self):
+        pass
+
+    def _getTabletService(self):
+        tabletService = None
+        try:
+            tabletService = self.session().service("ALTabletService")
+        except Exception as e:
+            self.logger.error(e)
+        return tabletService
+
+    def onInput_onStart(self):
+        # We create TabletService here in order to avoid
+        # problems with connections and disconnections of the tablet during the life of the application
+        tabletService = self._getTabletService()
+        if tabletService:
+            tabletService.hideWebview()
+        else:
+            self.logger.warning("ALTabletService not found.")
+        self.onStopped()]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="3" /></Box><Box name="Python Script" id="5" localization="8" tooltip="This box contains a basic python script and can be used to create any python script box you would like.&#x0A;&#x0A;To edit its script, double-click on it." x="779" y="454"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def _getTabletService(self):
+        tabletService = None
+        try:
+            tabletService = self.session().service("ALTabletService")
+        except Exception as e:
+            self.logger.error(e)
+        return tabletService
+
+    def onInput_onStart(self):
+        tabletService = self._getTabletService()
+        if tabletService:
+            # 1. Charger l'URL souhaitée
+            url = "https://www.youtube.com/shorts/irfCtxAiLHk"
+            tabletService.loadUrl(url)
+
+            # 2. Rendre la WebView visible sur la tablette
+            tabletService.showWebview()
+        else:
+            self.logger.warning("ALTabletService not found.")
+
+        self.onStopped()]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /></Box><Box name="Autonomous Abilities" id="6" localization="8" tooltip="Autonomous Abilities exists to keep the robot alive at all times. But this box allows you to disable all or parts of the Autonomous Abilities (Autonomous Blinking, Background Movement, Basic Awareness, Listening Movement, Speaking Movement)." x="154" y="250"><bitmap>media/images/box/auto-abilities.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.autonomouslife = ALProxy("ALAutonomousLife")
+
+    def onUnload(self):
+        pass
+
+    def onInput_onStart(self):
+        self.enableAnAbility("AutonomousBlinking")
+        self.enableAnAbility("BackgroundMovement")
+        self.enableAnAbility("BasicAwareness")
+        self.enableAnAbility("ListeningMovement")
+        self.enableAnAbility("SpeakingMovement")
+        self.onDone() # activate output of the box
+
+    def enableAnAbility(self, name):
+        self.autonomouslife.setAutonomousAbilityEnabled(name, self.getParameter(name))]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Output name="onDone" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="3" /><Parameter name="AutonomousBlinking" inherits_from_parent="0" content_type="0" value="1" default_value="1" tooltip="Enables the robot to make its eye leds blink when it sees someone and when it is interacting." id="4" /><Parameter name="BackgroundMovement" inherits_from_parent="0" content_type="0" value="1" default_value="1" tooltip="Defines which slight movements the robot does autonomously when its limbs are not moving." id="5" /><Parameter name="BasicAwareness" inherits_from_parent="0" content_type="0" value="1" default_value="1" tooltip="Allow to make the robot establish and keep eye contact with people." id="6" /><Parameter name="ListeningMovement" inherits_from_parent="0" content_type="0" value="1" default_value="1" tooltip="Enables some slight movements showing that the robot is listening." id="7" /><Parameter name="SpeakingMovement" inherits_from_parent="0" content_type="0" value="1" default_value="1" tooltip="Enables to start autonomously movements during the speech of the robot." id="8" /></Box><Link inputowner="2" indexofinput="2" outputowner="3" indexofoutput="6" /><Link inputowner="1" indexofinput="2" outputowner="3" indexofoutput="5" /><Link inputowner="3" indexofinput="2" outputowner="2" indexofoutput="3" /><Link inputowner="3" indexofinput="2" outputowner="1" indexofoutput="3" /><Link inputowner="0" indexofinput="3" outputowner="3" indexofoutput="4" /><Link inputowner="5" indexofinput="2" outputowner="3" indexofoutput="7" /><Link inputowner="6" indexofinput="2" outputowner="0" indexofoutput="2" /><Link inputowner="3" indexofinput="2" outputowner="6" indexofoutput="3" /></Diagram></BehaviorKeyframe></BehaviorLayer></Timeline></Box><Link inputowner="4" indexofinput="2" outputowner="0" indexofoutput="2" /><Link inputowner="0" indexofinput="4" outputowner="4" indexofoutput="3" /></Diagram></BehaviorKeyframe></BehaviorLayer></Timeline></Box></ChoregrapheProject>

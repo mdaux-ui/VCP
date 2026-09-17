@@ -1,0 +1,18 @@
+topic: ~ExampleDialog()
+language: enu
+
+# Concepts global
+concept:(hello) [hello]
+concept:(fra) [french]
+concept:(bye) [goodbye]
+
+#Concepts proposal
+concept:(test)[test]
+
+#Dialogue
+u:(~hello) hello humain
+u:(~fra) i will continue in french $toFrench=1
+u:(~bye) bye bye
+u:(_[image photo]) there is the image $showPhoto=1
+u:(_[hide]) ok i hide the image $hidePhoto=1
+u:(_[langue]) i speak english

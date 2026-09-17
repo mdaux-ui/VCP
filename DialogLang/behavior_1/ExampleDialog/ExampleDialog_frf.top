@@ -1,0 +1,18 @@
+topic: ~ExampleDialog()
+language: frf
+
+# Concepts globaux
+concept:(bonjour) [bonjour]
+concept:(ang) [anglais]
+concept:(aurevoir) [au-revoir]
+
+#Concepts proposal
+concept:(test)[test]
+
+#Dialogue
+u:(~bonjour) bonjour
+u:(~ang) je passe en anglais $toEnglish=1
+u:(~aurevoir) bye bye
+u:(_[image photo]) Voici la photo $showPhoto=1
+u:(_[cache enlève]) Je retire la photo $hidePhoto=1
+u:(_[langue])  je parle en français
