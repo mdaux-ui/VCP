@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#102a43">
+	<title>School Guide | Pepper</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<main class="app-shell">
+		<header class="topbar">
+			<div class="brand-lockup"><div class="brand-mark" aria-hidden="true">P</div><div><p class="eyebrow">PEPPER SCHOOL GUIDE</p><h1>Find your way around campus</h1></div></div>
+			<div class="status-pill"><span class="status-dot"></span> Ready to guide</div>
+		</header>
+		<section class="intro" aria-labelledby="page-title">
+			<div><p class="section-kicker">Interactive campus map</p><h2 id="page-title">Tap a stop to discover<br><em>what is waiting there.</em></h2></div>
+			<p class="intro-copy">Choose a numbered location. I will show you a short video and the next thing to know.</p>
+		</section>
+		<section class="guide-layout">
+			<div class="map-panel">
+				<div class="panel-heading"><div><p class="section-kicker">Campus route</p><h3>School overview</h3></div><div class="map-legend"><span class="legend-line"></span> Suggested route</div></div>
+				<div class="map" aria-label="Schematic map of the school with seven stops">
+					<div class="map-grid" aria-hidden="true"></div><div class="map-label north-label">NORTH WING</div><div class="map-label garden-label">COURTYARD</div>
+					<div class="building building-a"><span>MAIN<br>HALL</span></div><div class="building building-b"><span>SCIENCE<br>LABS</span></div><div class="building building-c"><span>LIBRARY</span></div><div class="building building-d"><span>SPORTS<br>CENTRE</span></div><div class="building building-e"><span>CAFETERIA</span></div>
+					<div class="route route-one" aria-hidden="true"></div><div class="route route-two" aria-hidden="true"></div><div class="route route-three" aria-hidden="true"></div>
+					<button class="map-stop stop-1 is-active" data-stop="1" aria-label="Stop 1, welcome desk"><span>01</span></button><button class="map-stop stop-2" data-stop="2" aria-label="Stop 2, science labs"><span>02</span></button><button class="map-stop stop-3" data-stop="3" aria-label="Stop 3, library"><span>03</span></button><button class="map-stop stop-4" data-stop="4" aria-label="Stop 4, courtyard"><span>04</span></button><button class="map-stop stop-5" data-stop="5" aria-label="Stop 5, cafeteria"><span>05</span></button><button class="map-stop stop-6" data-stop="6" aria-label="Stop 6, sports centre"><span>06</span></button><button class="map-stop stop-7" data-stop="7" aria-label="Stop 7, makerspace"><span>07</span></button>
+				</div>
+				<div class="map-footer"><span><strong>7</strong> stops on this tour</span><span class="scale-mark"><i></i> 20 m</span></div>
+			</div>
+			<aside class="info-panel" aria-live="polite">
+				<div class="video-frame"><div class="video-texture"></div><div class="video-content"><div class="play-icon" aria-hidden="true">▶</div><p class="video-overline">VIDEO PREVIEW</p><p class="video-title" id="videoTitle">Welcome to the school</p><a class="watch-link" id="watchLink" href="https://youtube.com" target="_blank" rel="noreferrer">Open on YouTube <span>↗</span></a></div><span class="video-duration" id="videoDuration">01:12</span></div>
+				<div class="stop-detail"><div class="detail-number" id="detailNumber">01</div><div><p class="section-kicker">Current stop</p><h3 id="stopTitle">Welcome desk</h3><p id="stopDescription">Start here for a friendly hello, visitor badges, and your first look at the school.</p></div></div>
+				<div class="detail-meta"><span><b class="meta-icon">⌖</b><span id="stopArea">Main entrance</span></span><span><b class="meta-icon">◷</b><span id="stopTime">1 min</span></span></div><button class="next-button" id="nextButton">Next stop <span>→</span></button>
+			</aside>
+		</section>
+		<footer class="footer-note"><span class="footer-mark">✦</span> A little help for every new arrival <span class="footer-rule"></span> <span>Built for Pepper</span></footer>
+	</main>
+	<script>
+		const stops = {
+			1: { title: 'Welcome desk', description: 'Start here for a friendly hello, visitor badges, and your first look at the school.', area: 'Main entrance', time: '1 min', video: 'Welcome to the school', duration: '01:12' },
+			2: { title: 'Science labs', description: 'See where experiments happen, meet the lab team, and learn the safety basics.', area: 'North wing · Floor 1', time: '3 min', video: 'A tour of the science labs', duration: '02:08' },
+			3: { title: 'Library', description: 'A quiet place to read, research, or find your next unexpected idea.', area: 'North wing · Floor 2', time: '2 min', video: 'Inside the school library', duration: '01:45' },
+			4: { title: 'Courtyard', description: 'Take a breath between classes in the heart of campus, surrounded by green space.', area: 'Central courtyard', time: '2 min', video: 'Our courtyard and gardens', duration: '01:26' },
+			5: { title: 'Cafeteria', description: 'Find lunch, fresh snacks, and a table to share with friends.', area: 'East building', time: '2 min', video: 'How the cafeteria works', duration: '01:54' },
+			6: { title: 'Sports centre', description: 'Discover the gym, changing rooms, and the activities available after class.', area: 'South wing', time: '4 min', video: 'Welcome to the sports centre', duration: '02:31' },
+			7: { title: 'Makerspace', description: 'A hands-on workshop for building, designing, and bringing bold ideas to life.', area: 'West building', time: '3 min', video: 'Meet us in the makerspace', duration: '01:38' }
+		};
+		const buttons = document.querySelectorAll('.map-stop'); const nextButton = document.querySelector('#nextButton'); let currentStop = 1;
+		function showStop(number) { const stop = stops[number]; currentStop = number; buttons.forEach((button) => button.classList.toggle('is-active', button.dataset.stop === String(number))); document.querySelector('#detailNumber').textContent = String(number).padStart(2, '0'); document.querySelector('#stopTitle').textContent = stop.title; document.querySelector('#stopDescription').textContent = stop.description; document.querySelector('#stopArea').textContent = stop.area; document.querySelector('#stopTime').textContent = stop.time; document.querySelector('#videoTitle').textContent = stop.video; document.querySelector('#videoDuration').textContent = stop.duration; document.querySelector('.video-frame').animate([{ opacity: .55, transform: 'translateY(4px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 260, easing: 'ease-out' }); }
+		buttons.forEach((button) => button.addEventListener('click', () => showStop(Number(button.dataset.stop)))); nextButton.addEventListener('click', () => showStop(currentStop === 7 ? 1 : currentStop + 1));
+	</script>
+</body>
+</html>
